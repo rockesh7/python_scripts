@@ -19,6 +19,20 @@ def trim_at_end_and_save(folderPath,fileName,numOfChars):
         old_name_path = folderPath + '/' + fileName
         os.rename(old_name_path, new_name_path)
 
+def append_at_start_with_serialization(folderPath,fileName,serial,str_to_be_appended):
+    if not fileName.startswith('.') and os.path.isfile(os.path.join(folderPath, fileName)):
+        new_name = str_to_be_appended + str(serial) + '_' + fileName
+        new_name_path = folderPath + '/' + new_name.strip()
+        old_name_path = folderPath + '/' + fileName
+        os.rename(old_name_path, new_name_path)
+
+def append_at_start_without_serialization(folderPath,fileName,str_to_be_appended):
+    if not fileName.startswith('.') and os.path.isfile(os.path.join(folderPath, fileName)):
+        new_name = str_to_be_appended + '_' + fileName
+        new_name_path = folderPath + '/' + new_name.strip()
+        old_name_path = folderPath + '/' + fileName
+        os.rename(old_name_path, new_name_path)
+
 rename = True
 while rename == True:
 
@@ -36,14 +50,31 @@ while rename == True:
             rename = True
 
             if option == '2':
-                numberOfCharacters = input('How many characters you want to be removed from end: ')
+                numberOfCharacters = input('How many characters you want to be removed at end: ')
                 numberOfCharacters = int(numberOfCharacters)
                 for file in file_list:
                     trim_at_end_and_save(folder_path,file,numberOfCharacters)
                 rename = True
 
             if option == '3':
-                print('This feature is under development... Wait for the next release')
+                append_at_start = True
+                while append_at_start == True:
+                    append_at_start_option = input('[1] Append string with serialization (ex. str1*,str2*,str3*...)\n[2] Append string without serialization (ex. str*,str*,str*)\n\nEnter your selection: ')
+                    if append_at_start_option == '1':
+                        str_to_be_appended = input('Enter the string you want to get appended: ')
+                        serial = 1
+                        for file in file_list:
+                            append_at_start_with_serialization(folder_path,file,serial,str_to_be_appended)
+                            serial = serial + 1
+                        append_at_start = False
+                    elif append_at_start_option == '2':
+                        str_to_be_appended = input('Enter the string you want to get appended: ')
+                        for file in file_list:
+                            append_at_start_without_serialization(folder_path,file,str_to_be_appended)
+                        append_at_start = False
+                    else:
+                        print ('Kindly select right option: ')
+                        append_at_start = True
                 rename = True
 
             if option == '4':
